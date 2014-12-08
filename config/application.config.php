@@ -3,10 +3,11 @@ return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
         'Application',
-        'ZendDeveloperTools',
+//        'ZendDeveloperTools',
         'DoctrineModule',
         'DoctrineORMModule',
         'Post', // <-- Add this line
+        'PostRest', // <-- Add this line
     ),
 
     'upload_dir' => __DIR__.'\../public/img/uploads',//添加代码 给upload文件夹可写权限
