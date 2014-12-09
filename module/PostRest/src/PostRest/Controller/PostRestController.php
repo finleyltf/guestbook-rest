@@ -38,7 +38,7 @@ class PostRestController extends AbstractRestfulController
 
         $data = array();
         foreach ($results as $result) {
-            $data[] = $result;
+            $data[] = $result->getArrayCopy();
         }
 
         return new JsonModel(array(
@@ -55,22 +55,72 @@ class PostRestController extends AbstractRestfulController
         $post = $this->getEntityManager()->find('Post\Entity\Post', $id);
 
         return new JsonModel(array(
-            'data' => $post,
+            'data' => $post->getArrayCopy(),
         ));
     }
 
     public function create($data)
     {
-        # code...
+
+        // to be completed
+        $form = new PostForm();
+        $post = new Post();
+        $form->setInputFilter($post->getInputFilter()); // ??
+
+        $form->setData($data);
+
+        if ($form->isValid()) {
+
+//            $file = $this->params()->fromFiles('image');
+//            $this->validatedUpload($file, $form);
+
+            $post->populate($form->getData());
+            $post->setDate(date_create());
+
+            // set the name of the uploaded file to the image
+//            $post->setImage($data->image['name']);
+            $post->setImage("download (1).jpeg");
+
+            $this->getEntityManager()->persist($post);
+            $this->getEntityManager()->flush();
+
+
+
+        }
+
+
+
     }
 
     public function update($id, $data)
     {
-        # code...
+        // to be completed
+
+        $data['id'] = $id;
+        $post = $this->getEntityManager()->find('Post\Entity\Post', $id);
+        $form = new PostForm();
+        $form->bind($post);
+        $form->setInputFilter($post->getInputFilter());
+        $form->setData($data);
+        if ($form->isValid()) {
+            $this->getEntityManager()->flush();
+        }
+
+        return $this->get($id);
+
+
     }
 
     public function delete($id)
     {
-        # code...
+        $post = $this->getEntityManager()->find('Post\Entity\Post', $id);
+        $this->getEntityManager()->Remove($post);
+        $this->getEntityManager()->flush();
+
+        return new JsonModel(array(
+            'data' => 'deleted',
+        ));
+
+
     }
 }
