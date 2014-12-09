@@ -25,9 +25,8 @@ return array(
             'orm_default' => array(
                 'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
                 'params' => array(
-                    'host' => '127.0.0.1',
-                    'port' => '8889',
-                    'dbname' => 'guestbook',
+                    'host' => 'mysql.cc.puv.fi',
+                    'dbname' => 'e0901022_guestbook',
                 ),
             ),
         ),
